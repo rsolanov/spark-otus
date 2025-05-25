@@ -11,8 +11,11 @@ services:
       - ./conf:/opt/spark/conf
       - ./data:/data
       - ./scripts:/scripts
+      - ./tmp/.ivy2:/tmp/.ivy2
+      - ./conf/log4j.properties:/opt/bitnami/spark/conf/log4j.properties
     environment:
       SPARK_MODE: master
+      SPARK_RPC_AUTHENTICATION_ENABLED: no
     networks:
       - spark-net
 
@@ -27,6 +30,8 @@ services:
     environment:
       SPARK_MODE: worker
       SPARK_MASTER_URL: "spark://spark-master:7077"
+      SPARK_WORKER_MEMORY: 2G	
+      SPARK_WORKER_CORES: 1
     networks:
       - spark-net
       
@@ -41,6 +46,9 @@ services:
     environment:
       SPARK_MODE: worker
       SPARK_MASTER_URL: "spark://spark-master:7077"
+      SPARK_WORKER_MEMORY: 2G	
+      SPARK_WORKER_CORES: 1
+
     networks:
       - spark-net
       
@@ -55,11 +63,14 @@ services:
     environment:
       SPARK_MODE: worker
       SPARK_MASTER_URL: "spark://spark-master:7077"
+      SPARK_WORKER_MEMORY: 2G	
+      SPARK_WORKER_CORES: 1
+
     networks:
       - spark-net
 
   almond:
-    image: almondsh/almond:latest
+    image: almondsh/almond
     ports:
       - "8888:8888"
       - "4041:4040"
@@ -69,6 +80,9 @@ services:
       - spark-master
     networks:
       - spark-net
+    environment:
+        JUPYTER_ENABLE_LAB: "yes"
+        SPARK_OPTS: "--master spark://spark-master:7077"
 
 networks:
   spark-net:
