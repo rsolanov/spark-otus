@@ -1,0 +1,10 @@
+services:
+  spark-scala:
+    build: .
+    container_name: spark-scala
+    volumes:
+      - ./:/app
+      - ./target:/app/target
+    working_dir: /app
+    tty: true
+    stdin_open: true
