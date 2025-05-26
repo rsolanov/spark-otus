@@ -10,21 +10,33 @@ object SparkDataFrameAPI {
       .getOrCreate()
 
     import spark.implicits._
+    try {
+      val countriesDF = spark.read.option("multiLine", value = true).json("countries.json")
 
-    val countriesDF = spark.read.json("countries.json")
+      println("Схема данных:")
+      countriesDF.printSchema()
 
-    val bordersDF = getCountriesWithManyBorders(countriesDF)
-    bordersDF.write.parquet("countries_with_many_borders.parquet")
+      println("Пример данных:")
+      countriesDF.select("name.common", "borders").show(5, truncate = false)
 
-    val languagesDF = getLanguageRanking(countriesDF)
-    languagesDF.write.parquet("language_ranking.parquet")
+      val bordersDF = getCountriesWithManyBorders(countriesDF)
+      println("Страны с 5+ границами:")
+      bordersDF.show(false)
 
-    spark.stop()
+      val languagesDF = getLanguageRanking(countriesDF)
+      println("Рейтинг языков:")
+      languagesDF.show(false)
+
+      bordersDF.write.parquet("countries_with_many_borders.parquet")
+      languagesDF.write.parquet("language_ranking.parquet")
+    }
+    finally {
+      spark.stop()
+    }
   }
 
-  def getCountriesWithManyBorders(countriesDF: DataFrame): DataFrame = {
-    countriesDF
-      .filter(size(col("borders")) >= 5)
+  def getCountriesWithManyBorders(df: DataFrame): DataFrame = {
+    df.filter(size(col("borders")) >= 5)  // Фильтр стран с 5+ границами
       .select(
         col("name.common").alias("Country"),
         size(col("borders")).alias("NumBorders"),
@@ -33,14 +45,13 @@ object SparkDataFrameAPI {
       .orderBy(col("NumBorders").desc)
   }
 
-  def getLanguageRanking(countriesDF: DataFrame): DataFrame = {
-    val explodedDF = countriesDF
-      .select(
-        col("name.common").alias("Country"),
-        explode(map_keys(col("languages"))).alias("Language")
-      )
+  def getLanguageRanking(df: DataFrame): DataFrame = {
+    val languagesExploded = df.select(
+      col("name.common").alias("Country"),
+      explode(col("languages")).as(Seq("LanguageCode", "Language"))
+    )
 
-    explodedDF
+    languagesExploded
       .groupBy("Language")
       .agg(
         count("Country").alias("NumCountries"),
