@@ -11,6 +11,6 @@ lazy val root = (project in file("."))
   .settings(assembly / assemblyJarName := "SparkDataFrameAPI.jar")
 
 ThisBuild / libraryDependencies ++= Seq(
-  "org.apache.spark" %% "spark-core" % "3.5.5",
-  "org.apache.spark" %% "spark-sql" % "3.5.5"
+  "org.apache.spark" %% "spark-core" % "3.5.5" % "provided",
+  "org.apache.spark" %% "spark-sql" % "3.5.5" % "provided"
 )
