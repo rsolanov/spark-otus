@@ -7,11 +7,15 @@ object SparkDataFrameAPI {
     val spark = SparkSession.builder()
       .appName("SparkDataFrameAPI")
       .master("local[*]")
+      .config("spark.sql.adaptive.enabled", "true")
+      .config("spark.sql.adaptive.coalescePartitions.enabled", "true")
       .getOrCreate()
 
     import spark.implicits._
     try {
       val countriesDF = spark.read.option("multiLine", value = true).json("countries.json")
+
+      countriesDF.cache()
 
       println("Схема данных:")
       countriesDF.printSchema()
@@ -27,16 +31,20 @@ object SparkDataFrameAPI {
       println("Рейтинг языков:")
       languagesDF.show(false)
 
-      bordersDF.write.parquet("countries_with_many_borders.parquet")
-      languagesDF.write.parquet("language_ranking.parquet")
-    }
-    finally {
+      saveDataFrame(bordersDF, "countries_with_many_borders.parquet")
+      saveDataFrame(languagesDF, "language_ranking.parquet")
+
+    } catch {
+      case e: Exception =>
+        println(s"Ошибка выполнения: ${e.getMessage}")
+        e.printStackTrace()
+    } finally {
       spark.stop()
     }
   }
 
-  def getCountriesWithManyBorders(df: DataFrame): DataFrame = {
-    df.filter(size(col("borders")) >= 5)  // Фильтр стран с 5+ границами
+  def getCountriesWithManyBorders(df: DataFrame, minBorders: Int = 5): DataFrame = {
+    df.filter(col("borders").isNotNull && size(col("borders")) >= minBorders)
       .select(
         col("name.common").alias("Country"),
         size(col("borders")).alias("NumBorders"),
@@ -46,17 +54,38 @@ object SparkDataFrameAPI {
   }
 
   def getLanguageRanking(df: DataFrame): DataFrame = {
-    val languagesExploded = df.select(
-      col("name.common").alias("Country"),
-      explode(col("languages")).as(Seq("LanguageCode", "Language"))
-    )
+    val languagesExploded = df
+      .filter(col("languages").isNotNull)
+      .select(
+        col("name.common").alias("Country"),
+        from_json(to_json(col("languages")), MapType(StringType, StringType)).alias("languagesMap")
+      )
+      .select(
+        col("Country"),
+        explode(col("languagesMap")).as(Seq("languageCode", "languageName"))
+      )
+      .filter(col("languageName").isNotNull && col("languageName") =!= "")
 
     languagesExploded
-      .groupBy("Language")
+      .groupBy("languageName")
       .agg(
         count("Country").alias("NumCountries"),
         collect_list("Country").alias("Countries")
       )
       .orderBy(col("NumCountries").desc)
+  }
+
+  private def saveDataFrame(df: DataFrame, path: String): Unit = {
+    try {
+      df.coalesce(1)
+        .write
+        .mode("overwrite")
+        .option("compression", "snappy")
+        .parquet(path)
+      println(s"Данные успешно сохранены в $path")
+    } catch {
+      case e: Exception =>
+        println(s"Ошибка сохранения в $path: ${e.getMessage}")
+    }
   }
 }
