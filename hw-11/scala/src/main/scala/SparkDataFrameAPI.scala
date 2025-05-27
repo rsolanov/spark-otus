@@ -60,7 +60,7 @@ object SparkDataFrameAPI {
         col("name.common").alias("Country"),
         from_json(to_json(col("languages")), MapType(StringType, StringType)).alias("languagesMap")
       )
-      .select(
+      .select( 
         col("Country"),
         explode(col("languagesMap")).as(Seq("languageCode", "languageName"))
       )
