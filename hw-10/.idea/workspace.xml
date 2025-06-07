@@ -5,16 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67e8bd91-04db-4aa6-9cab-32c833d21e6a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build.sbt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project/plugins.sbt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/RDDAPI.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/taxi_zone_lookup.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tripdata.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/hw-10/hw-10.hw-10-build.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/hw-10/hw-10.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sbt.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sbt.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/RDDAPI.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/RDDAPI.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../hw-11/scala/countries_with_many_borders.parquet/.part-00000-788fca7d-cc3b-4648-bb7d-d0232a17bfe1-c000.snappy.parquet.crc" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../hw-11/scala/countries_with_many_borders.parquet/part-00000-788fca7d-cc3b-4648-bb7d-d0232a17bfe1-c000.snappy.parquet" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../hw-11/scala/language_ranking.parquet/.part-00000-9ff0a3b4-4639-4096-ace9-0364215350e0-c000.snappy.parquet.crc" beforeDir="false" />
@@ -29,6 +22,13 @@
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Scala Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -52,9 +52,9 @@
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/YandexDisk/Education/spark-otus/homework/hw-11/scala",
-    "project.structure.last.edited": "Modules",
+    "project.structure.last.edited": "Global Libraries",
     "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "org.jetbrains.plugins.scala.settings.sections.UpdateSettingsSectionConfigurable"
   }
 }]]></component>

@@ -11,8 +11,7 @@
             <option value="$PROJECT_DIR$/project" />
           </set>
         </option>
-        <option name="sbtVersion" value="1.11.0" />
-        <option name="separateProdAndTestSources" value="true" />
+        <option name="resolveSbtClassifiers" value="true" />
       </SbtProjectSettings>
     </option>
   </component>
