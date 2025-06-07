@@ -53,7 +53,7 @@ object RDDAPI {
         case ((hour, zone), count) => s"$hour,$zone,$count"
       }
 
-      results.saveAsTextFile("output/trip_counts_by_hour_and_zone")
+      results.repartition(1).saveAsTextFile("output")
 
     } catch {
       case e: Exception =>
