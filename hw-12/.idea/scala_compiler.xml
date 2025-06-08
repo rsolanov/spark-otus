@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ScalaCompilerConfiguration">
+    <option name="separateProdTestSources" value="true" />
+    <profile name="sbt 1" modules="SparkDataFrameAPI,SparkDataFrameAPI.main,SparkDataFrameAPI.test,SparkDatasetAPI,SparkDatasetAPI.main,SparkDatasetAPI.test,homework,hw-12,hw-12.main,hw-12.test" />
+  </component>
+</project>
