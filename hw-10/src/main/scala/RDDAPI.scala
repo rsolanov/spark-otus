@@ -37,17 +37,12 @@ object RDDAPI {
 
       val joinedData = tripData.join(zoneData)
 
-      joinedData.take(3).foreach {
-        case (id, (datetime, zone)) =>
-          println(s"ID: $id, DateTime: $datetime, Zone: $zone")
-      }
-
       val hourZonePairs = joinedData.map {
         case (_, (datetime, zone)) =>
           ((datetime.getHour, zone), 1)
       }
 
-      val tripCounts = hourZonePairs.reduceByKey(_ + _)
+      val tripCounts = hourZonePairs.reduceByKey((x, y) => x + y)
 
       val results = tripCounts.map {
         case ((hour, zone), count) => s"$hour,$zone,$count"
