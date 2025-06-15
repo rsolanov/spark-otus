@@ -12,13 +12,13 @@ def get_spark():
 
 def getCountriesWithManyBorders(df: DataFrame, minBorders: int = 5) -> DataFrame:
     return (
-        df.filter(col("borders").isNotNull() & size(col("borders")) >= minBorders)
+        df.filter((col("borders").isNotNull()) & (size(col("borders")) >= minBorders))
         .select(
             col("name.common").alias("Country"),
             size(col("borders")).alias("NumBorders"),
             concat_ws(", ", col("borders")).alias("BorderCountries")
         )
-        .orderBy(col("NumBorders").desc)
+        .orderBy(col("NumBorders").desc())
     )
 
 def main():
@@ -37,7 +37,7 @@ def main():
         bordersDF = getCountriesWithManyBorders(countriesDF)
         print("Страны с 5+ границами:")
 
-        bordersDF.show(False)
+        bordersDF.show(5, False)
     except Exception as e:
         print(str(e))
     finally:

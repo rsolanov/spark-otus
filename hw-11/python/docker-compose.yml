@@ -1,7 +1,7 @@
 services:
   spark:
     build: .
-    container_name: spark-catalyst
+    container_name: pyspark
     volumes:
       - ./:/app
     tty: true
