@@ -1,0 +1,7 @@
+services:
+  spark:
+    build: .
+    container_name: spark-catalyst
+    volumes:
+      - ./:/app
+    tty: true
