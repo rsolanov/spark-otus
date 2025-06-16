@@ -1,13 +1,14 @@
 from pyspark.sql import SparkSession, DataFrame
 from pyspark.sql.functions import col, size, concat_ws
 
-
 def get_spark():
     return SparkSession.builder \
     .appName("SparkDataFrameAPI") \
     .master("local[*]") \
     .config("spark.sql.adaptive.enabled", "true") \
     .config("spark.sql.adaptive.coalescePartitions.enabled", "true") \
+    .config("spark.sql.debug.maxToStringFields", "1000") \
+    .config("spark.sql.log.level", "ERROR") \
     .getOrCreate()
 
 def getCountriesWithManyBorders(df: DataFrame, minBorders: int = 5) -> DataFrame:
